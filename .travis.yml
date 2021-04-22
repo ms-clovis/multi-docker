@@ -10,7 +10,7 @@ script:
   - docker run -e CI=true mclovis/react-test npm test
 
 after_success:
-  - docker build =t mclovis/multi-client ./client
+  - docker build -t mclovis/multi-client ./client
   - docker build -t mclovis/multi-nginx ./nginx
   - docker build -t mclovis/multi-server ./server
   - docker build -t mclovis/multi-worker ./worker
