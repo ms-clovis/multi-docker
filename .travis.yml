@@ -1,0 +1,24 @@
+services:
+  - docker
+
+
+before_install:
+  - docker build -t mclovis/react-test -f ./client/Dockerfile.dev ./client
+
+
+script:
+  - docker run -e CI=true mclovis/react-test npm test
+
+after_success:
+  - docker build =t mclovis/multi-client ./client
+  - docker build -t mclovis/multi-nginx ./nginx
+  - docker build -t mclovis/multi-server ./server
+  - docker build -t mclovis/multi-worker ./worker
+
+# take above images and push to docker r_github_packages:
+#login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+  - docker push mclovis/multi-client
+  - docker push mclovis/multi-nginx
+  - docker push mclovis/multi-server
+  - docker push mclovis/multi-worker
