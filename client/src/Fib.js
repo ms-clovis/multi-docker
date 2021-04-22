@@ -9,8 +9,8 @@ class Fib extends Component {
   };
 
   componentDidMount() {
-    this.fetchValues();
-    this.fetchIndexes();
+    this.fetchValues().catch();
+    this.fetchIndexes().catch();
   }
 
   async fetchValues() {
@@ -32,11 +32,11 @@ class Fib extends Component {
       index: this.state.index,
     }).then(() =>{
           //console.log(data)
-          this.fetchIndexes();
-          this.fetchValues();
+          this.fetchIndexes().catch();
+          this.fetchValues().catch();
         }
 
-    )
+    ).catch();
     this.setState({ index: '' });
   };
 
