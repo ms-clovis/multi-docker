@@ -1,0 +1,41 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "client",
+      "image": "mclovis/multi-client",
+      "hostname": "client",
+      "essential":false
+
+    },
+
+    {
+      "name": "nginx",
+      "image": "mclovis/multi-nginx",
+      "essential":true,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80
+        }
+      ],
+      "links": [
+        "client","api"
+      ]
+
+    },
+    {
+      "name": "api",
+      "image": "mclovis/multi-server",
+      "hostname": "api",
+      "essential":false
+
+    },
+    {
+      "name": "worker",
+      "image": "mclovis/multi-worker",
+      "essential":false
+
+    }
+  ]
+}

@@ -6,14 +6,23 @@ class Fib extends Component {
     seenIndexes: [],
     values: {},
     index: '',
+    interval: null,
   };
 
   componentDidMount() {
     try {
       this.fetchValues().catch();
       this.fetchIndexes().catch();
+      this.state.interval = setInterval(this.getNewValues,20000);
     } catch (e) {
     }
+  }
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+  getNewValues(){
+    if(Object.values(this.state.values).indexOf("nothing yet!") >-1)this.fetchValues().then(() =>{} )
   }
 
   async fetchValues() {

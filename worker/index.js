@@ -8,16 +8,30 @@ const redisClient = redis.createClient({
 });
 const sub = redisClient.duplicate();
 
-function fib(num, memo) {
-  memo = memo || {};
+// function fib(num, memo) {
+//   memo = memo || {};
+//
+//   if (memo[num]) return memo[num];
+//   if (num <= 1) return 1;
+//
+//   return memo[num] = fib(num - 1, memo) + fib(num - 2, memo);
+// }
 
-  if (memo[num]) return memo[num];
-  if (num <= 1) return 1;
+function fib(num){
+  let a = 1, b = 0, temp;
 
-  return memo[num] = fib(num - 1, memo) + fib(num - 2, memo);
+  while (num >= 0){
+    temp = a;
+    a = a + b;
+    b = temp;
+    num--;
+  }
+
+  return b;
 }
 
 sub.on('message', (channel, message) => {
+  console.log("Calculating for "+message + " ...");
   redisClient.hset('values', message, fib(parseInt(message)));
 });
 sub.subscribe('insert');
